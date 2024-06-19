@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html  onmouseup="for(let i of pourKey){clearInterval(i)}">
+	<head>
+		<script>
+			points = 0
+			
+			
+			function addPoint(){
+				points += Math.round((5**multi.value)**(+power.value/50 + 1)) //sub in the right thing later
+				pointDisplay.innerHTML = points + " points"
+			}
+			function pour(type){
+				bar = document.getElementById(type)
+				poured = 10**bar.value
+				toPour = Math.ceil(points/100)
+				toPour = Math.min(10**100-poured,toPour)
+				points -= toPour
+				pointDisplay.innerHTML = points + " points"
+				poured += toPour
+				bar.value = Math.log(poured)/Math.log(10)
+				multiDisplay.innerHTML = 5**multi.value
+				powerDisplay.innerHTML = +power.value/50 + 1
+				generDisplay.innerHTML = Math.floor(gener.value)
+				document.getElementById(type+"Poured").innerHTML = Math.round(poured)
+				clearInterval(generKey)
+				if(gener.value >= 1){
+					generKey = setInterval(addPoint,1000/Math.floor(gener.value))
+				}
+				totalPG.innerHTML = Math.round((5**multi.value)**(+power.value/50 + 1))
+			}
+			generKey = -1
+			pourKey = []
+		</script>
+	</head>
+	<body>
+		<h1 id="pointDisplay">0 points</h1>
+		<button onclick="addPoint()">add point(s)</button><text>(<span id="totalPG">1</span> per click)</text><br><br>
+		<button onmousedown="pourKey.push(setInterval(() => {pour('multi')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="multi" value='0' max='100'></progress><text>poured: <span id="multiPoured">0</span></text><br>
+		<text>multi from first bar: <span id="multiDisplay">1</span></text><br><br>
+		<button onmousedown="pourKey.push(setInterval(() => {pour('power')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="power" value='0' max='100'></progress><text>poured: <span id="powerPoured">0</span></text><br>
+		<text>power from second bar: <span id="powerDisplay">1</span> (applied after multiplier)</text><br><br>
+		<button onmousedown="pourKey.push(setInterval(() => {pour('gener')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="gener" value='0' max='100'></progress><text>poured: <span id="generPoured">0</span></text><br>
+		<text>generation from third bar: <span id="generDisplay">0</span>cps</text><br><br>
+	</body>
+</html>
