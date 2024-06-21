@@ -41,5 +41,6 @@
 		<text>power from second bar: <span id="powerDisplay">1</span> (applied after multiplier)</text><br><br>
 		<button onmousedown="pourKey.push(setInterval(() => {pour('gener')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="gener" value='0' max='100'></progress><text>poured: <span id="generPoured">0</span></text><br>
 		<text>generation from third bar: <span id="generDisplay">0</span>cps</text><br><br>
+		<text>Hold down the pour buttons to invest points.</text>
 	</body>
 </html>
