@@ -1,13 +1,99 @@
 <!DOCTYPE html>
 <html  onmouseup="for(let i of pourKey){clearInterval(i)}">
 	<head>
-		<script>
-			points = 0
+		
+	</head>
+	<body id="body">
+		<button id="NaNButton" onclick="NaNreset()" hidden>Everything has fallen apart. Rewind time for a NaN point.</button>
+		<div id="infGame">
+			<div id="mainGame">
+				<h1 id="pointDisplay">0 points</h1>
+				<button onclick="addPoint()">add point(s)</button><text>(<span id="totalPG">1</span> per click)</text><br><br>
+				<!--
+					multi to point gain
+					power to multi
+					passive generation
+				-->
+				<button onmousedown="pourKey.push(setInterval(() => {pour('multi')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="multi" value='0' max='100'></progress><text>poured: <span id="multiPoured">0</span></text><br>
+				<text>multi from first bar: <span id="multiDisplay">1</span></text><br><br>
+				<button onmousedown="pourKey.push(setInterval(() => {pour('power')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="power" value='0' max='100'></progress><text>poured: <span id="powerPoured">0</span></text><br>
+				<text>power from second bar: <span id="powerDisplay">1</span> (applied after multiplier)</text><br><br>
+				<button onmousedown="pourKey.push(setInterval(() => {pour('gener')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="gener" value='0' max='100'></progress><text>poured: <span id="generPoured">0</span></text><br>
+				<text>generation from third bar: <span id="generDisplay">0</span>cps</text><br><br>
+				<text>Hold down the pour buttons to invest points.</text><br><br>
+				<button id="resetButton" hidden onclick="prestige()">reset for a prestige point</button><br>
+				<text hidden id="prestPointDisplay">you have <span id="prestPointAmount">0</span> prestige points, multiplying point gain by 10^amount and increasing prestige point gain by 0.1 per.</text><br><br>
+			</div>
+			<button id="infButton" hidden onclick="infinity()">Infinity reset for a reward to boost the game</button><br>
+			<div id="infPointDisplay" hidden>You have <span id="infPointAmount">0</span> infinity points, multiplying point gain by their (amount + 1)^2 and providing various bonuses.</div>
+			<br>
+			<div id="infinityMilestones" hidden>
+				<text id="mile1">1 infinity: auto-pour into first bar</text><br>
+				<text id="mile2">2 infinities: auto-reset for prestige points (turns off at 100 prestige points)</text><br>
+				<text id="mile3">3 infinities: start with 10 points in the third bar</text><br>
+				<text id="mile4">4 infinities: auto-pour into the second bar</text><br>
+				<text id="mile6">6 infinities: start with 1e10 points in the third bar</text><br>
+				<text id="mile10">10 infinities: auto-pour into the third bar (due to technical limitations, does not increase its effect)</text><br>
+				<text id="mile15">15 infinities: unlock auto-infinities</text><br>
+				<text id="mile25">25 infinities: unlock infinity bars and hide milestones, but unlock three final milestones (which are unhidden, of course)</text>
+			</div>
+			<text id="mile1e10" hidden>1e10 IP: prestige point auto-reseter is uncapped, you can always infinity reset at 100 or more prestege points, infinity point gain is multiplied by sqrt(prestige points/100). (prestige points are softcapped beyond 100)<br></text>
+			<text id="mile1e16" hidden>1e16 IP: the 100th root of multi from inf points multiplies prestige point gain, and the fourth infinity bar's cap is extended.<br></text>
+			<text id="mile1e38" hidden>1e38 IP: the third infinity bar's cap is extended.</text>
+			<br>
+			<div id="prestAuto" hidden>
+				<input type="checkbox" id="prestAutoEnabled" checked><text>Auto-prestige</text>
+			</div>
+			<div id="infAuto" hidden>
+				<input type="checkbox" id="infAutoEnabled" checked><text>Auto-infinity</text>
+			</div>
+			<div id="infinityBars" hidden>
+				<!--
+					increase per prest point
+					prestige point start amount
+					multi to inf points
+					multi from inf points
+					third bar start amount
+				-->
+				<button onmousedown="pourKey.push(setInterval(() => {infPour('prest')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="prest" value='0' max='99'></progress><text>poured: <span id="prestPoured">0</span></text><br>
+				<text>boost from first infinity bar: <span id="prestDisplay">0.1</span> boost per prestige point</text><br><br>
+				<button onmousedown="pourKey.push(setInterval(() => {infPour('start')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="start" value='0' max='10'></progress><text>poured: <span id="startPoured">0</span></text><br>
+				<text>prestige point start amount from second infinity bar: <span id="startDisplay">0</span> on infinity reset</text><br><br>
+				<button onmousedown="pourKey.push(setInterval(() => {infPour('barst')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="barst" value='0' max='10'></progress><text>poured: <span id="barstPoured">0</span></text><br>
+				<text>inf point multi from third bar: <span id="barstDisplay">1</span></text><br><br>
+				<button onmousedown="pourKey.push(setInterval(() => {infPour('infmu')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="infmu" value='0' max='10'></progress><text>poured: <span id="infmuPoured">0</span></text><br>
+				<text>multi from infinity point power: <span id="infmuDisplay">2</span></text><br><br>
+				<button onmousedown="pourKey.push(setInterval(() => {infPour('thrst')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="thrst" value='0' max='9'></progress><text>poured: <span id="thrstPoured">0</span></text><br>
+				<text>Third bar start amount from fifth bar: <span id="thrstDisplay">10</span>%</text><br><br>
+			</div>
+		</div>
+		<div id="NaNStuff">
+			<text>You have <span id="NaNAmount">0</span> NaN points. They are reducing the requirement for early infinity milestones by their amount.</text>
+		</div>
+	</body>
+	<script>
+			startingHTML = mainGame.innerHTML
+			startingInfHTML = infGame.innerHTML
 			
+			points = 0
+			prestPoints = 0
+			infPoints = 0
+			NaNPoints = 0
+			thirdBarStartAmount = 0
+			bestInfPoints = 0
+			breakInf = false
+			infPrestMult = false
 			
 			function addPoint(){
-				points += Math.round((5**multi.value)**(+power.value/50 + 1)) //sub in the right thing later
+				points += Math.round((5**multi.value)**(+power.value/50 + 1) * (10**prestPoints) * ((infPoints + 1)**(2+(infmu.value/5)))) //sub in the right thing later
 				pointDisplay.innerHTML = points + " points"
+				
+				if(points == Infinity){
+					infButton.hidden = false
+				}
+				if(isNaN(points)){
+					//NaNButton.hidden = false
+				}
 			}
 			function pour(type){
 				bar = document.getElementById(type)
@@ -26,21 +112,212 @@
 				if(gener.value >= 1){
 					generKey = setInterval(addPoint,1000/Math.floor(gener.value))
 				}
-				totalPG.innerHTML = Math.round((5**multi.value)**(+power.value/50 + 1))
+				totalPG.innerHTML = Math.round((5**multi.value)**(+power.value/50 + 1) * (10**prestPoints) * ((infPoints + 1)**(2+(infmu.value/5))))
+				if(multi.value == 100 && power.value == 100 && gener.value == 100 && prestPoints < 100){
+					resetButton.hidden = false
+				}
+			}
+			function betterPour(type){
+				bar = document.getElementById(type)
+				poured = 10**bar.value
+				toPour = Math.ceil(points/100)
+				toPour = Math.min(10**100-poured,toPour)
+				pointDisplay.innerHTML = points + " points"
+				poured += toPour
+				bar.value = Math.log(poured)/Math.log(10)
+				multiDisplay.innerHTML = 5**multi.value
+				powerDisplay.innerHTML = +power.value/50 + 1
+				generDisplay.innerHTML = Math.floor(gener.value)
+				document.getElementById(type+"Poured").innerHTML = Math.round(poured)
+				totalPG.innerHTML = Math.round((5**multi.value)**(+power.value/50 + 1) * (10**prestPoints) * ((infPoints + 1)**(2+(infmu.value/5))))
+				if(multi.value == 100 && power.value == 100 && gener.value == 100){
+					resetButton.hidden = false
+				}
+			}
+			function infPour(type){
+				bar = document.getElementById(type)
+				poured = 10**bar.value
+				toPour = Math.ceil(infPoints/100)
+				toPour = Math.min(10**document.getElementById(type).max-poured,toPour)
+				infPoints -= toPour
+				infPointAmount.innerHTML = infPoints
+				poured += toPour
+				bar.value = Math.log(poured)/Math.log(10)
+				prestDisplay.innerHTML = 0.1 + prest.value/10
+				startDisplay.innerHTML = Math.ceil(start.value*10)
+				barstDisplay.innerHTML = Math.min(6**barst.value,6**10 * 1.6**(barst.value-10))
+				infmuDisplay.innerHTML = 2+(infmu.value/5)
+				thrstDisplay.innerHTML = (Math.log(thirdBarStartAmount)/Math.log(10))+thrst.value*10
+				document.getElementById(type+"Poured").innerHTML = Math.round(poured)
+				totalPG.innerHTML = Math.round((5**multi.value)**(+power.value/50 + 1) * (10**prestPoints) * ((infPoints + 1)**(2+(infmu.value/5))))
+			}
+			
+			
+			function prestige(){
+				points = 0
+				mainGame.innerHTML = startingHTML
+				prestPoints += (Math.floor(prestPoints*(0.1 + prest.value/10))+1)**((1-(Math.log(prestPoints)/Math.log(10))/100)**(prestPoints > 100))*((infPoints + 1)**(0.1+(infmu.value/50)))**infPrestMult
+				if(prestPoints <= 100){
+					infButton.hidden = true
+				}
+				totalPG.innerHTML = Math.round((5**multi.value)**(+power.value/50 + 1) * (10**prestPoints) * ((infPoints + 1)**(2+(infmu.value/5))))
+				clearInterval(generKey)
+				prestPointAmount.innerHTML = prestPoints
+				prestPointDisplay.hidden = false
+				if(thirdBarStartAmount > 0){
+					gener.value = (Math.log(thirdBarStartAmount))/Math.log(10)+thrst.value*10
+					clearInterval(generKey)
+					if(gener.value >= 1){
+						generKey = setInterval(addPoint,1000/Math.floor(gener.value))
+					}
+				}
+			}
+			function infinity(){
+				infButton.hidden = true
+				infPoints += Math.floor((Math.floor(prestPoints**0.5)**breakInf)*Math.min(6**barst.value,6**10 * 1.6**(barst.value-10)))
+				points = 0
+				prestPoints = Math.ceil(start.value*10)
+				mainGame.innerHTML = startingHTML
+				totalPG.innerHTML = Math.round(((5**multi.value)**(+power.value/50 + 1)) * (10**prestPoints) * ((infPoints + 1)**(2+(infmu.value/5))))
+				clearInterval(generKey)
+				prestPointAmount.innerHTML = prestPoints
+				prestPointDisplay.hidden = false
+				infPointDisplay.hidden = false
+				if(bestInfPoints == 0){
+					infinityMilestones.hidden = false
+				}
+				
+				if(infPoints > bestInfPoints){
+					bestInfPoints = infPoints
+				}
+				
+				infPointAmount.innerHTML = infPoints
+				
+				switch(bestInfPoints + NaNPoints){
+					case 1:
+						setInterval(() => {betterPour('multi')},10)
+						mile1.style.color = "green"
+						break
+					case 2:
+						prestKey = setInterval(() => {if((resetButton.hidden == false) && (prestPoints < 100 || breakInf) && prestAutoEnabled.checked){resetButton.onclick()}})
+						prestAuto.hidden = false
+						mile2.style.color = "green"
+						break
+					case 3:
+						thirdBarStartAmount = 10
+						
+						mile3.style.color = "green"
+						break
+					case 4:
+						setInterval(() => {betterPour('power')},10)
+						mile4.style.color = "green"
+						break
+					case 6:
+						thirdBarStartAmount = 10**10
+						mile6.style.color = "green"
+						break
+					case 10:
+						setInterval(() => {betterPour('gener')},10)
+						mile10.style.color = "green"
+						break
+					case 15:
+						infKey = setInterval(() => {if(infButton.hidden == false && infAutoEnabled.checked){infButton.onclick()}})
+						infAuto.hidden = false
+						mile15.style.color = "green"
+						break
+					case 25:
+						infinityBars.hidden = false
+						infinityMilestones.hidden = true
+						mile1e10.hidden = false
+						mile1e16.hidden = false
+						mile1e38.hidden = false
+						break
+				}
+				if(infPoints >= 1e10){
+					breakInf = true
+					mile1e10.style.color = "green"
+				}
+				if(infPoints >= 1e16){
+					infPrestMult = true
+					infmu.max = 99
+					mile1e16.style.color = "green"
+				}
+				if(infPoints >= 1e38){
+					barst.max = 99
+					mile1e38.style.color = "green"
+				}
+				if(thirdBarStartAmount > 0){
+					gener.value = (Math.log(thirdBarStartAmount))/Math.log(10)+thrst.value*10
+					clearInterval(generKey)
+					if(gener.value >= 1){
+						generKey = setInterval(addPoint,1000/Math.floor(gener.value))
+					}
+				}
+			}
+			
+			function NaNreset(){
+				points = 0
+				prestPoints = 0
+				infPoints = 0
+				thirdBarStartAmount = 0
+				bestInfPoints = 0
+				breakInf = false
+				infPrestMult = false
+				infGame = startingInfHTML
+				NaNPoints += 1
+				NaNAmount.innerHTML = NaNPoints
+				clearInterval(infKey)
+				clearInterval(prestKey)
+				NaNButton.hidden = true
+				infinityMilestones.hidden = false
+				
+				switch(NaNPoints){
+					case 25:
+						infinityBars.hidden = false
+						infinityMilestones.hidden = true
+						mile1e10.hidden = false
+						mile1e16.hidden = false
+						mile1e38.hidden = false
+						break
+					case 15:
+						infKey = setInterval(() => {if(infButton.hidden == false && infAutoEnabled.checked){infButton.onclick()}})
+						infAuto.hidden = false
+						mile15.style.color = "green"
+						break
+					case 10:
+						setInterval(() => {betterPour('gener')},10)
+						mile10.style.color = "green"
+						break
+					case 6:
+						thirdBarStartAmount = 10**10
+						mile6.style.color = "green"
+						break
+					case 4:
+						setInterval(() => {betterPour('power')},10)
+						mile4.style.color = "green"
+						break
+					case 3:
+						thirdBarStartAmount = 10
+						
+						mile3.style.color = "green"
+						break
+					case 2:
+						prestKey = setInterval(() => {if((resetButton.hidden == false) && (prestPoints < 100 || breakInf) && prestAutoEnabled.checked){resetButton.onclick()}})
+						prestAuto.hidden = false
+						mile2.style.color = "green"
+						break
+					case 1:
+						setInterval(() => {betterPour('multi')},10)
+						mile1.style.color = "green"
+						break
+				}
 			}
 			generKey = -1
 			pourKey = []
+			prestKey = -1
+			infKey = -1
+			
+			points = NaN
+			addPoint()
 		</script>
-	</head>
-	<body>
-		<h1 id="pointDisplay">0 points</h1>
-		<button onclick="addPoint()">add point(s)</button><text>(<span id="totalPG">1</span> per click)</text><br><br>
-		<button onmousedown="pourKey.push(setInterval(() => {pour('multi')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="multi" value='0' max='100'></progress><text>poured: <span id="multiPoured">0</span></text><br>
-		<text>multi from first bar: <span id="multiDisplay">1</span></text><br><br>
-		<button onmousedown="pourKey.push(setInterval(() => {pour('power')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="power" value='0' max='100'></progress><text>poured: <span id="powerPoured">0</span></text><br>
-		<text>power from second bar: <span id="powerDisplay">1</span> (applied after multiplier)</text><br><br>
-		<button onmousedown="pourKey.push(setInterval(() => {pour('gener')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="gener" value='0' max='100'></progress><text>poured: <span id="generPoured">0</span></text><br>
-		<text>generation from third bar: <span id="generDisplay">0</span>cps</text><br><br>
-		<text>Hold down the pour buttons to invest points.</text>
-	</body>
 </html>
