@@ -14,11 +14,11 @@
 					power to multi
 					passive generation
 				-->
-				<button onmousedown="pourKey.push(setInterval(() => {pour('multi')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="multi" value='0' max='100'></progress><text>poured: <span id="multiPoured">0</span></text><br>
+				<button onmousedown="pourKey.push(setInterval(() => {pour('multi')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}" ontouchstart="pourKey.push(setInterval(() => {pour('multi')},10))" ontouchend="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="multi" value='0' max='100'></progress><text>poured: <span id="multiPoured">0</span></text><br>
 				<text>multi from first bar: <span id="multiDisplay">1</span></text><br><br>
-				<button onmousedown="pourKey.push(setInterval(() => {pour('power')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="power" value='0' max='100'></progress><text>poured: <span id="powerPoured">0</span></text><br>
+				<button onmousedown="pourKey.push(setInterval(() => {pour('power')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}" ontouchstart="pourKey.push(setInterval(() => {pour('power')},10))" ontouchend="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="power" value='0' max='100'></progress><text>poured: <span id="powerPoured">0</span></text><br>
 				<text>power from second bar: <span id="powerDisplay">1</span> (applied after multiplier)</text><br><br>
-				<button onmousedown="pourKey.push(setInterval(() => {pour('gener')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="gener" value='0' max='100'></progress><text>poured: <span id="generPoured">0</span></text><br>
+				<button onmousedown="pourKey.push(setInterval(() => {pour('gener')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}" ontouchstart="pourKey.push(setInterval(() => {pour('gener')},10))" ontouchend="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="gener" value='0' max='100'></progress><text>poured: <span id="generPoured">0</span></text><br>
 				<text>generation from third bar: <span id="generDisplay">0</span>cps</text><br><br>
 				<text>Hold down the pour buttons to invest points.</text><br><br>
 				<button id="resetButton" hidden onclick="prestige()">reset for a prestige point</button><br>
@@ -55,19 +55,19 @@
 					multi from inf points
 					third bar start amount
 				-->
-				<button onmousedown="pourKey.push(setInterval(() => {infPour('prest')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="prest" value='0' max='99'></progress><text>poured: <span id="prestPoured">0</span></text><br>
+				<button onmousedown="pourKey.push(setInterval(() => {infPour('prest')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}" ontouchstart="pourKey.push(setInterval(() => {infPour('prest')},10))" ontouchend="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="prest" value='0' max='99'></progress><text>poured: <span id="prestPoured">0</span></text><br>
 				<text>boost from first infinity bar: <span id="prestDisplay">0.1</span> boost per prestige point</text><br><br>
-				<button onmousedown="pourKey.push(setInterval(() => {infPour('start')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="start" value='0' max='10'></progress><text>poured: <span id="startPoured">0</span></text><br>
+				<button onmousedown="pourKey.push(setInterval(() => {infPour('start')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}" ontouchstart="pourKey.push(setInterval(() => {infPour('start')},10))" ontouchend="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="start" value='0' max='10'></progress><text>poured: <span id="startPoured">0</span></text><br>
 				<text>prestige point start amount from second infinity bar: <span id="startDisplay">0</span> on infinity reset</text><br><br>
-				<button onmousedown="pourKey.push(setInterval(() => {infPour('barst')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="barst" value='0' max='10'></progress><text>poured: <span id="barstPoured">0</span></text><br>
+				<button onmousedown="pourKey.push(setInterval(() => {infPour('barst')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}" ontouchstart="pourKey.push(setInterval(() => {infPour('barst')},10))" ontouchend="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="barst" value='0' max='10'></progress><text>poured: <span id="barstPoured">0</span></text><br>
 				<text>inf point multi from third bar: <span id="barstDisplay">1</span></text><br><br>
-				<button onmousedown="pourKey.push(setInterval(() => {infPour('infmu')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="infmu" value='0' max='10'></progress><text>poured: <span id="infmuPoured">0</span></text><br>
+				<button onmousedown="pourKey.push(setInterval(() => {infPour('infmu')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}" ontouchstart="pourKey.push(setInterval(() => {infPour('infmu')},10))" ontouchend="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="infmu" value='0' max='10'></progress><text>poured: <span id="infmuPoured">0</span></text><br>
 				<text>multi from infinity point power: <span id="infmuDisplay">2</span></text><br><br>
-				<button onmousedown="pourKey.push(setInterval(() => {infPour('thrst')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="thrst" value='0' max='9'></progress><text>poured: <span id="thrstPoured">0</span></text><br>
+				<button onmousedown="pourKey.push(setInterval(() => {infPour('thrst')},10))" onmouseup="for(let i of pourKey){clearInterval(i)}" ontouchstart="pourKey.push(setInterval(() => {infPour('thrst')},10))" ontouchend="for(let i of pourKey){clearInterval(i)}">Pour</button> <progress id="thrst" value='0' max='9'></progress><text>poured: <span id="thrstPoured">0</span></text><br>
 				<text>Third bar start amount from fifth bar: <span id="thrstDisplay">10</span>%</text><br><br>
 			</div>
 		</div>
-		<div id="NaNStuff">
+		<div id="NaNStuff" hidden>
 			<text>You have <span id="NaNAmount">0</span> NaN points. They are reducing the requirement for early infinity milestones by their amount.</text>
 		</div>
 	</body>
@@ -317,7 +317,5 @@
 			prestKey = -1
 			infKey = -1
 			
-			points = NaN
-			addPoint()
 		</script>
 </html>
